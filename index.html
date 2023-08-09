@@ -1,1 +1,222 @@
+<button class="button" id="reset" onClick="reset()">Reset</button>
+
+<img id="img0" height=200 width=177 src="https://www.smashbros.com/assets_v2/img/fighter/mario/main.png" onClick="choose(this)"/>
+<img id="img1" height=200 width=177 src="https://www.smashbros.com/assets_v2/img/fighter/mario/main.png" onClick="choose(this)"/>
+<img id="img2" height=200 width=177 src="https://www.smashbros.com/assets_v2/img/fighter/mario/main.png" onClick="choose(this)"/>
+
+<div id="team">
+  <p>
+    Your team
+  </p>
+</div>
+
+<script>var dict = {
+  1: "mario",
+  2: "donkey_kong",
+  3: "link",
+  4: "samus",
+  5: "yoshi",
+  6: "kirby",
+  7: "fox",
+  8: "pikachu",
+  9: "luigi",
+  10: "ness",
+  11: "captain_falcon",
+  12: "jigglypuff",
+  13: "peach",
+  14: "bowser",
+  15: "ice_climbers",
+  16: "sheik",
+  17: "zelda",
+  18: "dr_mario",
+  19: "pichu",
+  20: "falco",
+  21: "marth",
+  22: "young_link",
+  23: "ganondorf",
+  24: "mewtwo",
+  25: "roy",
+  26: "mr_game_and_watch",
+  27: "meta_knight",
+  28: "pit",
+  29: "zero_suit_samus",
+  30: "wario",
+  31: "snake",
+  32: "ike",
+  33: "pokemon_trainer",
+  // 33-35 are all PT
+  36: "diddy_kong",
+  37: "lucas",
+  38: "sonic",
+  39: "king_dedede",
+  40: "olimar",
+  41: "lucario",
+  42: "rob",
+  43: "toon_link",
+  44: "wolf",
+  45: "villager",
+  46: "mega_man",
+  47: "wii_fit_trainer",
+  48: "rosalina_and_luma",
+  49: "little_mac",
+  50: "greninja",
+  51: "brawler", //brawl
+  52: "swordfighter", //sword
+  53: "gunner", //gun
+  54: "palutena",
+  55: "pac_man",
+  56: "robin",
+  57: "shulk",
+  58: "bowser_jr",
+  59: "duck_hunt",
+  60: "ryu",
+  61: "cloud",
+  62: "corrin",
+  63: "bayonetta",
+  64: "inkling",
+  65: "ridley",
+  66: "simon",
+  67: "king_k_rool",
+  68: "isabelle",
+  69: "incineroar",
+  70: "piranha_plant",
+  71: "joker",
+  72: "dq_hero",
+  73: "banjo_and_kazooie",
+  74: "terry",
+  75: "byleth",
+  76: "minmin",
+  77: "steve",
+  78: "sephiroth",
+  79: "pyra",
+  // 80 is Mythra
+  81: "kazuya",
+  82: "sora",
+  // echo
+  83: "dark_samus",
+  84: "daisy",
+  85: "lucina",
+  86: "chrom",
+  87: "dark_pit",
+  88: "ken",
+  89: "richter"
+};
+
+var vanilla = [81, 75, 67, 39, 53, 74, 14, 11, 72, 69, 23, 18, 52, 73, 45, 68, 56, 70, 78, 10, 17, 82];
+var plus1 = [79, 37, 6, 65, 2, 89, 66, 32, 40, 31, 77, 3, 76, 33, 61, 44, 62, 15, 49, 54, 51];
+var plus2 = [46, 9, 87, 20, 86, 30, 5, 28, 27, 8, 83, 4, 58, 25, 41, 57, 71, 24, 1, 85, 60];
+var plus3 = [55, 42, 47, 26, 38, 64, 21, 12, 13, 84, 50, 48, 7, 19, 59, 36, 22, 43, 63, 88, 29];
+
+var team = [];
+reset();
+
+function randomise() {
+  used = [];
+  for (var i = 0; i < 3; i++) {
+    var options = getRandomOptions();
+    var num = Math.floor(options.length * Math.random());
+    var char = dict[options[num]];
+    if (!used.includes(char) && !team.includes(char)) {
+      var url = getUrl(char);
+      document.getElementById("img" + i).src = url;
+      document.getElementById("img" + i).alt = char;
+      used.push(char);
+    } else {
+      // Try again
+      i--;
+    }
+  }
+}
+
+function getUrl(s) {
+  if (s == "zero_suit_samus") {
+    return "https://www.smashbros.com/assets_v2/img/fighter/zero_suit_samus/main3.png"
+  } else if (s == "gunner") {
+    return "https://ssb.wiki.gallery/images/thumb/e/e5/Mii_Gunner_SSBU.png/600px-Mii_Gunner_SSBU.png"
+  } else if (s == "swordfighter") {
+    return "https://ssb.wiki.gallery/images/thumb/f/fa/Mii_Swordfighter_SSBU.png/600px-Mii_Swordfighter_SSBU.png";
+  } else if (s == "brawler") {
+    return "https://ssb.wiki.gallery/images/thumb/e/e4/Mii_Brawler_SSBU.png/600px-Mii_Brawler_SSBU.png";
+  } else {
+    return "https://www.smashbros.com/assets_v2/img/fighter/" + s + "/main.png"
+  }
+}
+
+function getRandomOptions() {
+  // https://docs.google.com/spreadsheets/d/1F2shf4DwQq8iPctbD8OP9wM1ZPfM4e0uDH7J6ncQjYo/edit#gid=45275950
+  if (team.length == 0) {
+    return vanilla;
+  } else if (team.length == 1) {
+    return plus1;
+  } else if (team.length == 2) {
+    return plus2;
+  } else if (team.length == 3) {
+    return plus3;
+  } else if (team.length == 8) {
+    return Object.keys(dict);
+  } else {
+    // Smart choice to fill all categories to 2
+    options = [];
+    // Vanilla?
+    var c = 0;
+    for (var i = 0; i < team.length; i++) {
+      if (vanilla.includes(getKeyByValue(dict, team[i]))) c++;
+    }
+    if (c < 2) options = options.concat(vanilla);
+    // Plus1?
+    var c = 0;
+    for (var i = 0; i < team.length; i++) {
+      if (plus1.includes(getKeyByValue(dict, team[i]))) c++;
+    }
+    if (c < 2) options = options.concat(plus1);
+    // Plus2?
+    var c = 0;
+    for (var i = 0; i < team.length; i++) {
+      if (plus2.includes(getKeyByValue(dict, team[i]))) c++;
+    }
+    if (c < 2) options = options.concat(plus2);
+    // Plus3?
+    var c = 0;
+    for (var i = 0; i < team.length; i++) {
+      if (plus3.includes(getKeyByValue(dict, team[i]))) c++;
+    }
+    if (c < 2) options = options.concat(plus3);
+    // done
+    return options;
+  }
+}
+
+function getKeyByValue(object, value) {
+  return +Object.keys(object).find(key => object[key] === value);
+}
+
+function reset() {
+  team = [];
+  var div = document.createElement("div");
+  div.id = "team";
+  var p = document.createElement("p");
+  p.appendChild(document.createTextNode("Your team"));
+  div.appendChild(p);
+  var toReplace = document.getElementById("team");
+  var parent = toReplace.parentNode;
+  parent.insertBefore(div, toReplace);
+  parent.removeChild(toReplace)
+  randomise();
+}
+
+function choose(img) {
+  if (team.length >= 9) return;
+  var url = getUrl(img.alt);
+  var newimg = document.createElement("img");
+  newimg.src = url;
+  newimg.width = 64
+  newimg.height = 72
+  document.getElementById("team").appendChild(newimg);
+  team.push(img.alt);
+  if (team.length < 9) {
+    randomise();
+  } else {
+    document.getElementById("team").appendChild(document.createTextNode("done"))
+  }
+}
 </script>
